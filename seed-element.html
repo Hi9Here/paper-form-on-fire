@@ -1,97 +1,94 @@
-<!--
-    @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-    Code distributed by Google as part of the polymer project is also
-    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-<link rel="import" href="../polymer/polymer.html">
-
-<!--
-Element providing solution to no problem in particular.
-
-##### Example
-
-    <seed-element></seed-element>
-
-@element seed-element
-@blurb Element providing solution to no problem in particular.
-@status alpha
-@homepage http://polymerlabs.github.io/seed-element
--->
-<polymer-element name="seed-element" attributes="notitle author">
-
-  <template>
-
-    <link rel="stylesheet" href="seed-element.css">
-
-    <h1>Hello from seed-element</h1>
-    <content></content>
-
-  </template>
-
-  <script>
-
-    Polymer({
-      /**
-       * The `author` attribute sets an initial author
-       *
-       * @attribute author
-       * @type string
-       * @default 'Dimitri Glazkov'
-       */
-      author: 'Dimitri Glazkov',
-
-      /**
-       * `fancy` is a property that does something fancy.
-       *
-       * @property fancy
-       * @type bool
-       * @default false
-       */
-      fancy: false,
-
-      ready: function() {
-        // Ready is a lifecycle callback.
-        // You can do setup work in here.
-        // More info: http://www.polymer-project.org/docs/polymer/polymer.html#lifecyclemethods
-      },
-
-      /**
-       * The `sayHello` method will return a greeting.
-       *
-       * @method sayHello
-       * @param {String} greeting Pass in a specific greeting.
-       * @return {String} Returns a string greeting.
-       */
-      sayHello: function(greeting) {
-        var response = greeting || 'Hello World!';
-        return 'seed-element says, ' + response;
-      },
-
-      /**
-       * The `seed-element-lasers-success` event is fired whenever we
-       * call fireLasers.
-       *
-       * @event seed-element-lasers-success
-       * @param {Object} detail
-       *   @param {string} detail.sound An amazing sound.
-       */
-
-      /**
-       * The `fireLasers` method will fire the lasers. At least
-       * it will dispatch an event that claims lasers were fired :)
-       *
-       * @method fireLasers
-       */
-      fireLasers: function() {
-        this.fire('seed-element-lasers-success', { sound: 'Pew pew pew!' });
-      }
-
-    });
-
+<link rel="import" href="/bower_components/polymer/polymer.html" />
+<link rel="import" href="/bower_components/firebase-element/firebase-element.html" />
+<link rel="import" href="/bower_components/paper-datepicker/paper-datepicker.html" />
+<link rel="import" href="/bower_components/paper-input/paper-input.html" />
+<link rel="import" href="/bower_components/paper-button/paper-button.html" />
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<polymer-element name="paper-form-on-fire" attributes="firebase_url">
+  <template id="paper-form-on-fire">
+    <paper-button on-click="{{loadFrom}}" raised role="button" tabindex="0"> 
+    Booking inquiry
+  <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
+  <content select="h1"></content>
+    <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Location" floatinglabel >
+      <input value="{{dataLocation}}" is="core-input" id="inputLocation"></input>
+    </paper-input-decorator><br />
+      <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{dateFrom}}" ></paper-datepicker>
+      <firebase-element id="base" location="{{firebase_url}}">
+      </firebase-element>
+      <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
+        <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>
+      </paper-input-decorator><br />
+      <paper-input-decorator error="Just the number of guests please" label="Number of Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
+        <input value="{{dataGuests}}" type="number" is="core-input" id="inputGuests" ></input>
+      </paper-input-decorator><br />
+    <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Name" floatinglabel >
+      <input value="{{dataName}}" is="core-input" pattern="^[\w-]+\s?[\w-]*$" id="inputName"></input>
+    </paper-input-decorator><br />
+      <paper-input-decorator error="Email Address please" label="Email" floatinglabel  isInvalid="{{!$.inputEmail.validity.valid}}"  >
+        <input value="{{dataEmail}}" type="email" is="core-input" id="inputEmail"></input>
+      </paper-input-decorator><br />
+      <paper-input-decorator isInvalid="{{!$.inputPhone.validity.valid}}" error="This is not a phone number!" label="Telephone" floatinglabel >
+        <input value="{{dataPhone}}" type="number" is="core-input" id="inputPhone"></input>
+      </paper-input-decorator><br />
+    <paper-button label="OK" affirmative on-click="{{addEntry}}">OK</paper-button>
+  </paper-action-dialog>
+ </paper-button>
+ <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
+ <paper-toast raised text="Your Message has NOT Been sent PHONE US NOW" id="toast2" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
+ <paper-toast raised text="Please fill in the form" id="toast3" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
+</template>
+    <script>
+      Polymer('paper-form-on-fire', {
+        // initialize the element's model
+        ready: function() {
+          this.dateFrom = moment();
+          this.dataDate="";
+          this.dataLocation="";
+          this.dataNights="";
+          this.dataGuests="";
+          this.dataName="";
+          this.dataEmail="";
+          this.dataPhone="";
+        },
+       dataNights:"",
+       dataGuests:"",
+       dataName:"",
+       dataLocation:"",
+       dataEmail:"",
+       dataPhone:"",
+       loadFrom: function(e) {
+         this.$.loadFrom.toggle();
+       },
+       check:function(e) {
+         debugger;
+         alert( moment(this.dateFrom).isAfter() );
+	 return (moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);
+       },
+       data:{},
+       addEntry: function() {
+	  if (this.check) {
+            this.data={
+              date:this.dateFrom+"",
+              nights:this.dataNights,
+              guests:this.dataGuests,
+              name:this.dataName,
+              email:this.dataEmail,
+              phone:this.dataPhone,
+              location:this.dataLocation
+	    };
+	    if (this.$.base.push(this.data) != false) {
+	      this.$.toast1.show();// Sent
+	      this.ready();
+	    } else {
+	      this.$.toast2.show();// Not sent
+	    }
+          } else {
+            return false;
+	    this.$.toast3.show();// Not fill in
+          }
+        }
+      });
   </script>
-
-</polymer-element>
+  </polymer-element>
+</html>

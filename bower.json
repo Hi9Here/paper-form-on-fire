@@ -1,10 +1,10 @@
 {
-  "name": "seed-element",
+  "name": "paper-form-on-fire",
   "version": "0.0.0",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Marcus Hitchins <marcus@hhost.me>"
   ],
-  "description": "Element providing solution to no problem in particular.",
+  "description": "Paper form that writes to firebase",
   "keywords": [
     "web-component",
     "web-components",
@@ -13,13 +13,14 @@
   ],
   "main": "seed-element.html",
   "license": "MIT",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/HackITtoday/paper-form-on-fire",
   "ignore": [
     "/.*",
     "/tests/"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.4"
+    "paper-datepicker": "*"
   },
   "devDependencies": {
     "web-component-tester": "*"

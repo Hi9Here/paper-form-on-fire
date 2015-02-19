@@ -19,8 +19,14 @@
     "/tests/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.4"
-    "paper-datepicker": "*"
+    "polymer": "Polymer/polymer#^0.5.4",
+    "paper-datepicker": "*",
+    "webcomponentsjs": "~0.5.5",
+    "core-component-page": "Polymer/core-component-page#~0.5.5",
+    "firebase-element": "Polymer/firebase-element#~0.5.5",
+    "core-icons": "Polymer/core-icons#~0.5.5",
+    "paper-input": "Polymer/paper-input#~0.5.5",
+    "core-icon": "Polymer/core-icon#~0.5.5"
   },
   "devDependencies": {
     "web-component-tester": "*"

@@ -16,12 +16,14 @@
       <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{dateFrom}}" ></paper-datepicker>
       <firebase-element id="base" location="{{firebase_url}}">
       </firebase-element>
-      <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
-        <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>
-      </paper-input-decorator><br />
-      <paper-input-decorator error="Just the number of guests please" label="Number of Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
-        <input value="{{dataGuests}}" type="number" is="core-input" id="inputGuests" ></input>
-      </paper-input-decorator><br />
+      <div horizontal layout>
+        <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
+	  <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>
+	</paper-input-decorator>
+	<paper-input-decorator error="Just the number of guests please" label="Number of Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
+	  <input value="{{dataGuests}}" type="number" is="core-input" id="inputGuests" ></input>
+	</paper-input-decorator>
+      </div>
     <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Name" floatinglabel >
       <input value="{{dataName}}" is="core-input" pattern="^[\w-]+\s?[\w-]*$" id="inputName"></input>
     </paper-input-decorator><br />

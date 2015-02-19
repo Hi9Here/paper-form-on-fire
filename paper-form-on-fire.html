@@ -34,7 +34,7 @@
         <input value="{{dataPhone}}" type="number" is="core-input" id="inputPhone"></input>
       </paper-input-decorator><br />
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
-    <paper-button label="OK" affirmative="{{check}}" on-click="{{addEntry}}">OK</paper-button>
+    <paper-button label="OK" affirmative disabled="{{!$.inputEmail.validity.valid}}" disabled="{{$.inputEmail.value == '' }}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
  </paper-button>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>

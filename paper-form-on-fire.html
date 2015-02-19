@@ -20,7 +20,7 @@
         <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
 	  <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>
 	</paper-input-decorator>
-	<paper-input-decorator error="Just the number of guests please" label="Number of Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
+	<paper-input-decorator error="Just the number of guests please" label="Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
 	  <input value="{{dataGuests}}" type="number" is="core-input" id="inputGuests" ></input>
 	</paper-input-decorator>
       </div>
@@ -34,7 +34,7 @@
         <input value="{{dataPhone}}" type="number" is="core-input" id="inputPhone"></input>
       </paper-input-decorator><br />
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
-    <paper-button label="OK" affirmative on-click="{{addEntry}}">OK</paper-button>
+    <paper-button label="OK" affirmative="{{check}}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
  </paper-button>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>

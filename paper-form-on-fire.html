@@ -10,7 +10,7 @@
     Booking inquiry
   <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
   <content select="h1"></content>
-    <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Location" floatinglabel >
+    <paper-input-decorator error="" label="Location" floatinglabel>
       <input value="{{dataLocation}}" is="core-input" id="inputLocation"></input>
     </paper-input-decorator><br />
       <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{dateFrom}}" ></paper-datepicker>

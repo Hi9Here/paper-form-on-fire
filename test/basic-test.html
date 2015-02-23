@@ -23,7 +23,7 @@
 <body>
 
   <!-- You use the document as a place to set up your fixtures. -->
-  <paper-form-on-fire></paper-form-on-fire>
+  <paper-form-on-fire firebase_url="firebase_url" <\paper-form-on-fire>
 
   <script>
       var myEl = document.querySelector('paper-form-on-fire');
@@ -34,6 +34,9 @@
         });
         test('the Location is not set', function() {
           assert.isTrue(myEl.dataLocation == "");
+        });
+        test('the Location is not set', function() {
+          assert.isTrue(myEl.firebase_url == "firebase_url");
         });
       });
   </script>

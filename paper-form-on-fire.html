@@ -63,7 +63,7 @@
        loadFrom: function(e) {
          this.$.loadFrom.toggle();
        },
-       check:function(e) {
+       check:function(e) { // needs fixing
          debugger;
          alert( moment(this.dateFrom).isAfter() );
 	 return (moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);

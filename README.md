@@ -3,7 +3,9 @@ Polymer Paper Form on Fire
 
 ##What it is
 
-It's a quick and easy form we created. It is a Polymer Component Form that is based on Firebase a realitme server service owned by Google. The Firebase element it is on is called Firebase Element and was designed by the Google Polymer Team. It is also using [paper-date-picker](https://github.com/HackITtoday/paper-datepicker) another component we have created
+It's a quick and easy form we created. It is a Polymer Component Form that is based on Firebase a realitme server service owned by Google. The Firebase element it is on is called Firebase Element and was designed by the Google Polymer Team. It is also using [paper-date-picker](https://github.com/HackITtoday/paper-datepicker) another component we have created.
+
+It also uses [paper-toast](https://github.com/Polymer/paper-toast) as a confirmation popup when the form is sent
 
 We have put in an URL pointing to a demo firebase server in which you can see data being updated in realtime. 
 
@@ -26,6 +28,9 @@ Licence: [MIT](http://opensource.org/licenses/MIT)
 To install using bower.
 
 >bower install paper-form-on-fire  --save
+
+##Need Your Help
+We put this up quickly as we thought how powerful it could be. There are some issues and would love for anyone to add more or help with some Pull Requests. 
 
 ## Testing Your Element
 

@@ -15,6 +15,11 @@ The polymer firebase element is [here](https://github.com/Polymer/firebase-eleme
 
 Firebase server service is [here](https://www.firebase.com)
 
+It was also created on the [polymer seed-element](https://github.com/PolymerLabs/seed-element) template hence the contributors. Apart from the Authors the contributors on the list did not add directly to the form, just the seed-element.
+
+#Authors
+This was created by [Marcus7777](https://github.com/marcus7777) with very little help from [woisme](https://github.com/woisme) for [HackIT](https://github.com/hackit)
+
 You can change the URL to your own  Firebase URL. We have used [form.firebase.io-demo.com](form.firebase.io.demo.com). If you use the demo and send the form you can see the data update in real time. Which we think is very cool.
 
 Remember it's free to create a stater account so it's easy to get it up and running.

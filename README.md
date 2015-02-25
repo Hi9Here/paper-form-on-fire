@@ -30,7 +30,11 @@ To install using bower.
 >bower install paper-form-on-fire  --save
 
 ##Need Your Help
-We put this up quickly as we thought how powerful it could be. There are some issues and would love for anyone to add more or help with some Pull Requests. 
+We put this up quickly as we thought how powerful it could be. There are some issues and would love for anyone to add more or help with some Pull Requests. We have Waffle.io board integration below to show we are working on it. It shows the number of issues we are working on and the throughput of issues.
+
+[![Stories in Ready](https://badge.waffle.io/hackittoday/paper-form-on-fire.svg?label=ready&title=Ready)](http://waffle.io/hackittoday/paper-form-on-fire)
+
+[![Throughput Graph](https://graphs.waffle.io/hackittoday/paper-form-on-fire/throughput.svg)](https://waffle.io/hackittoday/paper-form-on-fire/metrics)
 
 ## Testing Your Element
 

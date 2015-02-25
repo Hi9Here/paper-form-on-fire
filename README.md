@@ -1,11 +1,19 @@
-seed-element
+Polymer Paper Form on Fire
 ============
 
-See the [component page](http://polymerlabs.github.io/seed-element) for more information.
+##What it is
 
-## Getting Started
+It is a Polymer Component Form that is based on Firebase a realitme server service owned by Google. The Firebase element it is on is called Firebase Element and was designed by the Google Polymer Team. It is also using [paper-date-picker](https://github.com/HackITtoday/paper-datepicker) another component we have created
 
-We've put together a [guide to seed-element](http://www.polymer-project.org/docs/start/reusableelements.html) to help get you rolling.
+We have put in an URL pointing to a demo firebase server in which you can see data being updated in realtime. 
+
+The paper-date-picker element is [here](https://github.com/HackITtoday/paper-datepicker)
+
+The polymer firebase element is [here](https://github.com/Polymer/firebase-element)
+
+Firebase server service is [here](https://www.firebase.com)
+
+
 
 ## Testing Your Element
 

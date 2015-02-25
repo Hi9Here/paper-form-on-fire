@@ -33,7 +33,7 @@
     <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Name" floatinglabel >
       <input value="{{dataName}}" is="core-input" pattern="^[\w-]+\s?[\w-]*$" id="inputName"></input>
     </paper-input-decorator><br />
-      <paper-input-decorator error="Email Address please" label="Email" floatinglabel  isInvalid="{{!$.inputEmail.validity.valid}}"  >
+      <paper-input-decorator error="Email Address please" label="Email*" floatinglabel  isInvalid="{{!$.inputEmail.validity.valid}}"  >
         <input value="{{dataEmail}}" type="email" is="core-input" id="inputEmail"></input>
       </paper-input-decorator><br />
       <paper-input-decorator isInvalid="{{!$.inputPhone.validity.valid}}" error="This is not a phone number!" label="Telephone" floatinglabel >

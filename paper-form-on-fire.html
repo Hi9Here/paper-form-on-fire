@@ -4,10 +4,16 @@
 <link rel="import" href="../paper-input/paper-input.html" />
 <link rel="import" href="../paper-button/paper-button.html" />
 <link rel="import" href="../paper-toast/paper-toast.html">
-<polymer-element name="paper-form-on-fire" attributes="firebase_url">
+<polymer-element name="paper-form-on-fire" attributes="firebase_url link linkText">
   <template id="paper-form-on-fire">
+  <template bind if="{{link}}">
+    <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
+  </template>
+  <template bind if="{{!link}}">
     <paper-button on-click="{{loadFrom}}" raised role="button" tabindex="0"> 
-    Booking inquiry
+      {{linkText}}
+    </paper-button>
+  </template>
   <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
   <content select="h1"></content>
     <paper-input-decorator error="" label="Location" floatinglabel>
@@ -36,7 +42,6 @@
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
     <paper-button label="OK" affirmative disabled="{{!$.inputEmail.validity.valid || ($.inputEmail.value == '') }}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
- </paper-button>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
  <paper-toast raised text="Your Message has NOT Been sent PHONE US NOW" id="toast2" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
  <paper-toast raised text="Please fill in the form" id="toast3" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>

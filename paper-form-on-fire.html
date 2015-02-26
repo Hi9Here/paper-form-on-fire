@@ -6,7 +6,7 @@
 <link rel="import" href="../paper-toast/paper-toast.html">
 <polymer-element name="paper-form-on-fire" attributes="firebase_url link linkText">
   <template id="paper-form-on-fire">
-  <template bind if="{{link}}">
+  <template applyAuthorStyles bind if="{{link}}">
     <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
   </template>
   <template bind if="{{!link}}">
@@ -48,6 +48,7 @@
 </template>
     <script>
       Polymer('paper-form-on-fire', {
+
         // initialize the element's model
         ready: function() {
           this.dateFrom = moment();

@@ -4,7 +4,8 @@
 <link rel="import" href="../paper-input/paper-input.html" />
 <link rel="import" href="../paper-button/paper-button.html" />
 <link rel="import" href="../paper-toast/paper-toast.html">
-<polymer-element name="paper-form-on-fire" attributes="firebase_url link linkText">
+
+<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link linkText">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
     <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
@@ -20,8 +21,11 @@
       <input value="{{dataLocation}}" is="core-input" id="inputLocation"></input>
     </paper-input-decorator><br />
       <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{dateFrom}}" ></paper-datepicker>
-      <firebase-element id="base" location="{{firebase_url}}">
-      </firebase-element>
+
+      <firebase-element id="base" location="{{firebase_url_data}}"> </firebase-element>
+      <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}"> </firebase-element>
+      {{form}}
+
       <div horizontal layout>
         <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
 	  <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>

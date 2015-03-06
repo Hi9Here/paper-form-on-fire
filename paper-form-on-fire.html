@@ -16,33 +16,27 @@
     </paper-button>
   </template>
   <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
-  <content select="h1"></content>
-    <paper-input-decorator error="" label="Location" floatinglabel>
-      <input value="{{dataLocation}}" is="core-input" id="inputLocation"></input>
-    </paper-input-decorator><br />
-      <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{dateFrom}}" ></paper-datepicker>
 
       <firebase-element id="base" location="{{firebase_url_data}}"> </firebase-element>
-      <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}"> </firebase-element>
-      {{form}}
+      <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
+      <template repeat="{{x in keys}}">
+        <template if="{{form[x].type == 'date'}}">
+          <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
+        </template>
 
+        <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
+          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
+            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></input>
+	  </paper-input-decorator>
+        </template>
+        <template if="{{(form[x].type == 'textarea')}}">
+          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
+            <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
+	  </paper-input-decorator>
+        </template>
+      </template>
       <div horizontal layout>
-        <paper-input-decorator error="Number of nights please" label="Nights" isInvalid="{{!$.inputNights.validity.valid}}" floatinglabel >
-	  <input value="{{dataNights}}" is="core-input" type="number" id="inputNights" ></input>
-	</paper-input-decorator>
-	<paper-input-decorator error="Just the number of guests please" label="Guests" floatinglabel isInvalid="{{!$.inputGuests.validity.valid}}">
-	  <input value="{{dataGuests}}" type="number" is="core-input" id="inputGuests" ></input>
-	</paper-input-decorator>
       </div>
-    <paper-input-decorator error="Just your first name and last name please" isInvalid="{{!$.inputName.validity.valid}}" label="Name" floatinglabel >
-      <input value="{{dataName}}" is="core-input" pattern="^[\w-]+\s?[\w-]*$" id="inputName"></input>
-    </paper-input-decorator><br />
-      <paper-input-decorator error="Email Address please" label="Email*" floatinglabel  isInvalid="{{!$.inputEmail.validity.valid}}"  >
-        <input value="{{dataEmail}}" type="email" is="core-input" id="inputEmail"></input>
-      </paper-input-decorator><br />
-      <paper-input-decorator isInvalid="{{!$.inputPhone.validity.valid}}" error="This is not a phone number!" label="Telephone" floatinglabel >
-        <input value="{{dataPhone}}" type="number" is="core-input" id="inputPhone"></input>
-      </paper-input-decorator><br />
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
     <paper-button label="OK" affirmative disabled="{{!$.inputEmail.validity.valid || ($.inputEmail.value == '') }}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
@@ -55,52 +49,30 @@
 
         // initialize the element's model
         ready: function() {
-          this.dateFrom = moment();
-          this.dataDate="";
-          this.dataLocation="";
-          this.dataNights="";
-          this.dataGuests="";
-          this.dataName="";
-          this.dataEmail="";
-          this.dataPhone="";
         },
-       dataNights:"",
-       dataGuests:"",
-       dataName:"",
-       dataLocation:"",
-       dataEmail:"",
-       dataPhone:"",
        loadFrom: function(e) {
          this.$.loadFrom.toggle();
        },
        check:function(e) { // needs fixing
-         debugger;
-         alert( moment(this.dateFrom).isAfter() );
 	 return (moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);
        },
        data:{},
        addEntry: function() {
-	  if (this.check) {
-            this.data={
-              date:this.dateFrom+"",
-              nights:this.dataNights,
-              guests:this.dataGuests,
-              name:this.dataName,
-              email:this.dataEmail,
-              phone:this.dataPhone,
-              location:this.dataLocation
-	    };
+         if (this.check) {
 	    if (this.$.base.push(this.data) != false) {
-	      this.$.toast1.show();// Sent
-	      this.ready();
-	    } else {
-	      this.$.toast2.show();// Not sent
-	    }
-          } else {
-            return false;
-	    this.$.toast3.show();// Not fill in
-          }
-        }
+              this.$.toast1.show();// Sent
+              this.ready();
+            } else {
+              this.$.toast2.show();// Not sent
+            }
+         } else {
+           this.$.toast3.show();// Not fill in
+           return false;
+         }
+       },
+       removeLeadingNumber: function(str){
+         return  str.match(/^[0-9]\s+(.*)$/)[1];
+       }
       });
   </script>
   </polymer-element>

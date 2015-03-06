@@ -21,12 +21,12 @@
       <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
       <template repeat="{{x in keys}}">
         <template if="{{form[x].type == 'date'}}">
-          <paper-datepicker locale="en-gb" formatDate="ll" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
+          <paper-datepicker locale="{{form[x].format}}" formatDate="ll" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
         </template>
 
         <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
           <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
-            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></input>
+          <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} ></input>
 	  </paper-input-decorator>
         </template>
         <template if="{{(form[x].type == 'textarea')}}">
@@ -72,6 +72,9 @@
        },
        removeLeadingNumber: function(str){
          return  str.match(/^[0-9]\s+(.*)$/)[1];
+       },
+       required:  function(str){
+         if (str+""=="1") return "required";
        }
       });
   </script>

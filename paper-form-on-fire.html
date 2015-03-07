@@ -25,20 +25,23 @@
         </template>
 
         <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
-          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
-            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} ></input>
+          <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
+            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
 	  </paper-input-decorator>
         </template>
-        <template if="{{(form[x].type == 'textarea')}}">
+        <template if="{{form[x].type == 'textarea'}}">
           <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
             <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
 	  </paper-input-decorator>
+        </template>
+        <template if="{{typeof form[x] == "string" }}">
+          {{form[x]}}
         </template>
       </template>
       <div horizontal layout>
       </div>
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
-    <paper-button label="OK" affirmative id="ok" rem_disabled="{{!$.inputEmail.validity.valid || ($.inputEmail.value == '') }}" on-click="{{addEntry}}">OK</paper-button>
+    <paper-button label="OK" affirmative id="ok" disabled="{{notFilledIn}}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
  <paper-toast raised text="Your Message has NOT Been sent PHONE US NOW" id="toast2" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
@@ -53,32 +56,58 @@
        loadFrom: function(e) {
          this.$.loadFrom.toggle();
        },
-       check:function(e) { // needs fixing
-	 return true //(moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);
-       },
        data:{},
+       inputAction:function(e) {
+         var posting = copy(this.data); 
+         var schema = copy(this.form); 
+         listOfInputs = Object.keys(schema);
+         notFilledIn = false;
+         listOfInputs.forEach(function (key) {
+           if (schema[key].required && posting[schema[key].id] == undefined ) {
+             notFilledIn = true;
+           } 
+         });
+         this.notFilledIn = notFilledIn;
+// need to add vildition
+//         var d = document.querySelector("/deep/ #"+e.target.id);
+//debugger;
+//         d.parentNode.isInvalid = !e.target.validity.valid;
+//debugger;
+       },
+       notFilledIn:true,
        addEntry: function() {
-         debugger;// needs de
-         if (this.check) {
-           var posting = copy(this.data); 
-           listOfInputs = Object.keys(posting);
-           listOfInputs.forEach(function (key) {
-              console.log( key );
-              console.log(posting[key])
-           });
-	    if (this.$.base.push(this.data) != false) {
-              this.$.toast1.show();// Sent
-              this.ready();
-            } else {
-              this.$.toast2.show();// Not sent
-            }
+         var posting = copy(this.data); 
+         var schema = copy(this.form); 
+         var notFilledIn = this.notFilledIn;
+         listOfInputs = Object.keys(schema);
+         listOfInputs.forEach(function (key) {
+           if (schema[key].required && posting[schema[key].id] == undefined ) {
+             notFilledIn = true;
+           } else {
+             posting[schema[key].id] = posting[schema[key].id]+"";
+           }
+         });
+
+         if (!notFilledIn) {
+	   if (this.$.base.push(posting) != false) {
+             this.$.toast1.show();// Sent
+             this.ready();
+           } else {
+             this.$.toast2.show();// Not sent
+           }
          } else {
            this.$.toast3.show();// Not fill in
+           this.$.loadFrom.toggle();// 
            return false;
          }
        },
        removeLeadingNumber: function(str){
-         return str.match(/^[0-9]\s+(.*)$/)[1];// need to add a if
+         debugger;
+         if (str.match(/^[0-9]+\s+(.*)$/) !== null ) return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
+       },
+       requiredStar:  function(str){
+         if (str+""=="1") return ' *';
+         // if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
        },
        required:  function(str){
          if (str+""=="1") return "required";

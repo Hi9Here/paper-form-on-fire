@@ -26,7 +26,7 @@
 
         <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
           <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
-          <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} ></input>
+            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} ></input>
 	  </paper-input-decorator>
         </template>
         <template if="{{(form[x].type == 'textarea')}}">
@@ -38,7 +38,7 @@
       <div horizontal layout>
       </div>
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
-    <paper-button label="OK" affirmative disabled="{{!$.inputEmail.validity.valid || ($.inputEmail.value == '') }}" on-click="{{addEntry}}">OK</paper-button>
+    <paper-button label="OK" affirmative id="ok" rem_disabled="{{!$.inputEmail.validity.valid || ($.inputEmail.value == '') }}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
  <paper-toast raised text="Your Message has NOT Been sent PHONE US NOW" id="toast2" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
@@ -54,11 +54,18 @@
          this.$.loadFrom.toggle();
        },
        check:function(e) { // needs fixing
-	 return (moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);
+	 return true //(moment(this.dateFrom).isAfter() && $.inputEmail.validity.valid);
        },
        data:{},
        addEntry: function() {
+         debugger;// needs de
          if (this.check) {
+           var posting = copy(this.data); 
+           listOfInputs = Object.keys(posting);
+           listOfInputs.forEach(function (key) {
+              console.log( key );
+              console.log(posting[key])
+           });
 	    if (this.$.base.push(this.data) != false) {
               this.$.toast1.show();// Sent
               this.ready();
@@ -71,12 +78,23 @@
          }
        },
        removeLeadingNumber: function(str){
-         return  str.match(/^[0-9]\s+(.*)$/)[1];
+         return str.match(/^[0-9]\s+(.*)$/)[1];// need to add a if
        },
        required:  function(str){
          if (str+""=="1") return "required";
        }
       });
+function copy(o) {
+  var copy = Object.create(Object.getPrototypeOf(o));
+  var propNames = Object.getOwnPropertyNames(o);
+
+  propNames.forEach(function(name) {
+    var desc = Object.getOwnPropertyDescriptor(o, name);
+    Object.defineProperty(copy, name, desc);
+  });
+
+  return copy;
+}
   </script>
   </polymer-element>
 </html>

@@ -34,7 +34,7 @@
             <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
 	  </paper-input-decorator>
         </template>
-        <template if="{{typeof form[x] == "string" }}">
+        <template if="{{!form[x].type}}">
           {{form[x]}}
         </template>
       </template>
@@ -102,8 +102,7 @@
          }
        },
        removeLeadingNumber: function(str){
-         debugger;
-         if (str.match(/^[0-9]+\s+(.*)$/) !== null ) return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
+         return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
        },
        requiredStar:  function(str){
          if (str+""=="1") return ' *';

@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-input/paper-input.html" />
 <link rel="import" href="../paper-button/paper-button.html" />
 <link rel="import" href="../paper-toast/paper-toast.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 
 <polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link linkText">
   <template id="paper-form-on-fire">
@@ -34,6 +35,19 @@
             <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
 	  </paper-input-decorator>
         </template>
+        
+        <template if="{{form[x].type == 'option'}}">
+          <paper-dropdown-menu label="{{x|removeLeadingNumber}}">
+              <paper-dropdown class="dropdown">
+                  <core-menu class="menu">
+                    <template repeat="{{option in form[x].options}}">
+                      <paper-item>{{option}}</paper-item>
+                    </template>
+                  </core-menu>
+              </paper-dropdown>
+          </paper-dropdown-menu>
+        </template>
+        
         <template if="{{!form[x].type}}">
           {{form[x]}}
         </template>

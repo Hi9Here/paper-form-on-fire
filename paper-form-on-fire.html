@@ -94,7 +94,7 @@
        addEntry: function() {
          var posting = copy(this.data); 
          var schema = copy(this.form); 
-         var notFilledIn = this.notFilledIn;
+         var notFilledIn = false;
          listOfInputs = Object.keys(schema);
          listOfInputs.forEach(function (key) {
            if (schema[key].required && posting[schema[key].id] == undefined ) {
@@ -118,6 +118,7 @@
          } else {
            this.$.toast3.show();// Not fill in
            this.$.loadFrom.toggle();// 
+           this.notFilledIn = true;
            return false;
          }
        },

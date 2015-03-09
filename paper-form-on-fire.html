@@ -85,6 +85,9 @@
          var d = document.querySelectorAll("html /deep/ #decorator-"+e.target.id);
          if (d[0]) {
            d[0].isInvalid = !e.target.validity.valid;
+           if (d[0].isInvalid) {
+             this.notFilledIn = true;
+           }
          }
        },
        notFilledIn:true,
@@ -98,10 +101,10 @@
              notFilledIn = true;
            } else {
              posting[schema[key].id] = posting[schema[key].id]+"";
-             var d = document.querySelectorAll("html /deep/ #decorator-"+schema[key].id);
+             var d = document.querySelectorAll("html /deep/ #"+schema[key].id);
              if (d[0]) {
-               d[0].isInvalid = !e.target.validity.valid;
-               notFilledIn = true;
+               debugger;
+               if (!d[0].validity.valid) notFilledIn = true;
              }
            }
          });

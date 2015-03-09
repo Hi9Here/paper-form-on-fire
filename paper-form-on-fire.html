@@ -82,13 +82,10 @@
            } 
          });
          this.notFilledIn = notFilledIn;
-// need to add vildition
-//         var d = document.querySelector("/deep/ #"+e.target.id);
-         var d = this.shadowRoots["#decorator-" + e.target.id];
-
-debugger;
-         d.isInvalid = !e.target.validity.valid;
-//debugger;
+         var d = document.querySelectorAll("html /deep/ #decorator-"+e.target.id);
+         if (d[0]) {
+           d[0].isInvalid = !e.target.validity.valid;
+         }
        },
        notFilledIn:true,
        addEntry: function() {
@@ -101,6 +98,11 @@ debugger;
              notFilledIn = true;
            } else {
              posting[schema[key].id] = posting[schema[key].id]+"";
+             var d = document.querySelectorAll("html /deep/ #decorator-"+schema[key].id);
+             if (d[0]) {
+               d[0].isInvalid = !e.target.validity.valid;
+               notFilledIn = true;
+             }
            }
          });
 

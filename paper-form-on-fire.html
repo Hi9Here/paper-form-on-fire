@@ -97,11 +97,11 @@
          var notFilledIn = false;
          listOfInputs = Object.keys(schema);
          listOfInputs.forEach(function (key) {
-           if (schema[key].required && posting[schema[key].id] == undefined ) {
+           if ((schema[key].required+"" == "1" ) && posting[schema[key].id] == undefined ) {
              notFilledIn = true;
            } else {
              posting[schema[key].id] = posting[schema[key].id]+"";
-             var d = document.querySelectorAll("html /deep/ #"+schema[key].id);
+             var d = document.querySelectorAll("html paper-form-on-fire /deep/ #"+schema[key].id);
              if (d[0]) {
                if (!d[0].validity.valid) notFilledIn = true;
              }

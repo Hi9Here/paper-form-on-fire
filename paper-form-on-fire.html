@@ -22,7 +22,7 @@
       <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
       <template id="theForm" repeat="{{x in keys}}">
         <template if="{{form[x].type == 'date'}}">
-          <paper-datepicker locale="{{form[x].format}}" formatDate="ll" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
+        <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
         </template>
 
         <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
@@ -109,7 +109,8 @@
              }
            }
          });
-         if (!notFilledIn) {
+         if (!notFilledIn){
+           posting.from = document.URL;
 	   if (this.$.base.push(posting) != false) {
              this.$.toast1.show();// Sent
              this.ready();

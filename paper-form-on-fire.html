@@ -20,7 +20,7 @@
 
       <firebase-element id="base" location="{{firebase_url_data}}"> </firebase-element>
       <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
-      <template repeat="{{x in keys}}">
+      <template id="theForm" repeat="{{x in keys}}">
         <template if="{{form[x].type == 'date'}}">
           <paper-datepicker locale="{{form[x].format}}" formatDate="ll" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
         </template>
@@ -84,8 +84,10 @@
          this.notFilledIn = notFilledIn;
 // need to add vildition
 //         var d = document.querySelector("/deep/ #"+e.target.id);
-//debugger;
-//         d.parentNode.isInvalid = !e.target.validity.valid;
+         var d = this.shadowRoots["#decorator-" + e.target.id];
+
+debugger;
+         d.isInvalid = !e.target.validity.valid;
 //debugger;
        },
        notFilledIn:true,

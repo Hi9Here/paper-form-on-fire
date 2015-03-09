@@ -103,7 +103,6 @@
              posting[schema[key].id] = posting[schema[key].id]+"";
              var d = document.querySelectorAll("html /deep/ #"+schema[key].id);
              if (d[0]) {
-               debugger;
                if (!d[0].validity.valid) notFilledIn = true;
              }
            }

@@ -100,7 +100,9 @@
            if ((schema[key].required+"" == "1" ) && posting[schema[key].id] == undefined ) {
              notFilledIn = true;
            } else {
-             posting[schema[key].id] = posting[schema[key].id]+"";
+           if (schema[key].type == "date") {
+             posting[schema[key].id] = moment(posting[schema[key].id]).format("ll");
+           }
              var d = document.querySelectorAll("html paper-form-on-fire /deep/ #"+schema[key].id);
              if (d[0]) {
                if (!d[0].validity.valid) notFilledIn = true;

@@ -101,7 +101,7 @@
              notFilledIn = true;
            } else {
            if (schema[key].type == "date") {
-             posting[schema[key].id] = moment(posting[schema[key].id]).format("ll");
+             posting[schema[key].id] = moment(posting[schema[key].id]).format(schema[key].format);
            }
              var d = document.querySelectorAll("html paper-form-on-fire /deep/ #"+schema[key].id);
              if (d[0]) {

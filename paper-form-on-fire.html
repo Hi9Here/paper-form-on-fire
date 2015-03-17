@@ -1,11 +1,17 @@
-<link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="../firebase-element/firebase-element.html" />
-<link rel="import" href="../paper-datepicker/paper-datepicker.html" />
-<link rel="import" href="../paper-input/paper-input.html" />
-<link rel="import" href="../paper-button/paper-button.html" />
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../firebase-element/firebase-element.html">
+<link rel="import" href="../paper-datepicker/paper-datepicker.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link href="../core-collapse/core-collapse.html" rel="import">
+<link href="../core-menu/core-menu.html" rel="import">
+<link href="../paper-dropdown/paper-dropdown.html" rel="import">
+<link href="../paper-item/paper-item.html" rel="import">
+<link href="../paper-dialog/paper-action-dialog.html" rel="import">
 
+  
 <polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link linkText">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
@@ -28,19 +34,19 @@
         <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
           <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
             <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
-	  </paper-input-decorator>
+      	  </paper-input-decorator>
         </template>
         <template if="{{form[x].type == 'textarea'}}">
           <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
             <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
-	  </paper-input-decorator>
+	        </paper-input-decorator>
         </template>
         
         <template if="{{form[x].type == 'option'}}">
           <paper-dropdown-menu label="{{x|removeLeadingNumber}}">
               <paper-dropdown class="dropdown">
                   <core-menu class="menu">
-                    <template repeat="{{option in form[x].options}}">
+                    <template repeat="{{ option in form[x].options }}">
                       <paper-item>{{option}}</paper-item>
                     </template>
                   </core-menu>
@@ -127,11 +133,11 @@
        removeLeadingNumber: function(str){
          return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
        },
-       requiredStar:  function(str){
+       requiredStar: function(str){
          if (str+""=="1") return ' *';
          // if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
        },
-       required:  function(str){
+       required: function(str){
          if (str+""=="1") return "required";
        }
       });

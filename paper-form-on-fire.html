@@ -11,7 +11,6 @@
 <link href="../paper-item/paper-item.html" rel="import">
 <link href="../paper-dialog/paper-action-dialog.html" rel="import">
 
-  
 <polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link linkText">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
@@ -36,16 +35,17 @@
             <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
       	  </paper-input-decorator>
         </template>
+        
         <template if="{{form[x].type == 'textarea'}}">
-          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}}" floatinglabel >
+          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
             <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
 	        </paper-input-decorator>
         </template>
         
         <template if="{{form[x].type == 'option'}}">
-          <paper-dropdown-menu label="{{x|removeLeadingNumber}}">
+          <paper-dropdown-menu label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}">
               <paper-dropdown class="dropdown">
-                  <core-menu class="menu">
+                  <core-menu id="{{form[x].id}}" selected="{{data[form[x].id]}}" class="menu" on-core-select="{{inputAction}}">
                     <template repeat="{{ option in form[x].options }}">
                       <paper-item>{{option}}</paper-item>
                     </template>
@@ -69,78 +69,82 @@
 </template>
     <script>
       Polymer('paper-form-on-fire', {
-
-        // initialize the element's model
         ready: function() {
         },
-       loadFrom: function(e) {
-         this.$.loadFrom.toggle();
-       },
-       data:{},
-       inputAction:function(e) {
-         var posting = copy(this.data); 
-         var schema = copy(this.form); 
-         listOfInputs = Object.keys(schema);
-         notFilledIn = false;
-         listOfInputs.forEach(function (key) {
-           if (schema[key].required && posting[schema[key].id] == undefined ) {
-             notFilledIn = true;
-           } 
-         });
-         this.notFilledIn = notFilledIn;
-         var d = document.querySelectorAll("html /deep/ #decorator-"+e.target.id);
-         if (d[0]) {
-           d[0].isInvalid = !e.target.validity.valid;
-           if (d[0].isInvalid) {
-             this.notFilledIn = true;
-           }
-         }
-       },
-       notFilledIn:true,
-       addEntry: function() {
-         var posting = copy(this.data); 
-         var schema = copy(this.form); 
-         var notFilledIn = false;
-         listOfInputs = Object.keys(schema);
-         listOfInputs.forEach(function (key) {
-           if ((schema[key].required+"" == "1" ) && posting[schema[key].id] == undefined ) {
-             notFilledIn = true;
-           } else {
-           if (schema[key].type == "date") {
-             posting[schema[key].id] = moment(posting[schema[key].id]).format(schema[key].format);
-           }
-             var d = document.querySelectorAll("html paper-form-on-fire /deep/ #"+schema[key].id);
-             if (d[0]) {
-               if (!d[0].validity.valid) notFilledIn = true;
-             }
-           }
-         });
-         if (!notFilledIn){
-           posting.from = document.URL;
-	   if (this.$.base.push(posting) != false) {
-             this.$.toast1.show();// Sent
-             this.ready();
-           } else {
-             this.$.toast2.show();// Not sent
-           }
-         } else {
-           this.$.toast3.show();// Not fill in
-           this.$.loadFrom.toggle();// 
-           this.notFilledIn = true;
-           return false;
-         }
-       },
-       removeLeadingNumber: function(str){
-         return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
-       },
-       requiredStar: function(str){
-         if (str+""=="1") return ' *';
-         // if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
-       },
-       required: function(str){
-         if (str+""=="1") return "required";
-       }
-      });
+        loadFrom: function(e) {
+          this.$.loadFrom.toggle();
+        },
+        data:{},
+        inputAction:function(e) {
+          var posting = copy(this.data); 
+          var schema = copy(this.form); 
+          listOfInputs = Object.keys(schema);
+          notFilledIn = false;
+          listOfInputs.forEach(function (key) {
+            debugger;
+            if (schema[key].required && (posting[schema[key].id] == undefined || posting[schema[key].id] == "")) {
+              notFilledIn = true;
+            } 
+          });
+          this.notFilledIn = notFilledIn;
+          var d = document.querySelectorAll("html /deep/ #decorator-"+e.target.id);
+          if (d[0]) {
+            d[0].isInvalid = !e.target.validity.valid;
+            if (d[0].isInvalid) {
+              this.notFilledIn = true;
+            }
+          }
+        },
+        notFilledIn:true,
+        addEntry: function() {
+          var posting = copy(this.data);
+          var posting_ = {};
+          var schema = copy(this.form); 
+          var notFilledIn = false;
+          listOfInputs = Object.keys(schema);
+          listOfInputs.forEach(function (key) {
+            if ((schema[key].required+"" == "1" ) && (posting[schema[key].id] == undefined || posting[schema[key].id] == "") ) {
+              notFilledIn = true;
+            } else {
+              if (schema[key].type == "date") {
+                posting_[schema[key].id] = moment(posting[schema[key].id]).format(schema[key].format)+"";
+              } else if (schema[key].type == "option") {
+                posting_[schema[key].id] = schema[key].options[ posting[schema[key].id] ]+'';
+              } else {
+                posting_[schema[key].id] = posting[schema[key].id]+"";
+              }
+              var d = document.querySelectorAll("html /deep/ input#"+schema[key].id);
+              if (d[0]) {
+                if (!d[0].validity.valid) notFilledIn = true;
+              }
+            }
+          });
+          if (!notFilledIn){
+            posting_.from = document.URL;
+      	    if (this.$.base.push(posting_) != false) {
+              this.$.toast1.show();// Sent
+              this.ready();
+            } else {
+              this.$.toast2.show();// Not sent
+            }
+          } else {
+            this.$.toast3.show();// Not fill in
+            this.$.loadFrom.toggle();// 
+            this.notFilledIn = true;
+            return false;
+          }
+        },
+        removeLeadingNumber: function(str){
+          return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
+        },
+        requiredStar: function(str){
+          if (str+""=="1") return ' *';
+          // if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
+        },
+        required: function(str){
+          if (str+""=="1") return "required";
+        }
+       });
 function copy(o) {
   var copy = Object.create(Object.getPrototypeOf(o));
   var propNames = Object.getOwnPropertyNames(o);

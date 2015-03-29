@@ -81,7 +81,6 @@
           listOfInputs = Object.keys(schema);
           notFilledIn = false;
           listOfInputs.forEach(function (key) {
-            debugger;
             if (schema[key].required && (posting[schema[key].id] == undefined || posting[schema[key].id] == "")) {
               notFilledIn = true;
             } 

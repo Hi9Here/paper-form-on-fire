@@ -81,6 +81,7 @@
           listOfInputs = Object.keys(schema);
           notFilledIn = false;
           listOfInputs.forEach(function (key) {
+            debugger;
             if (schema[key].required && (posting[schema[key].id] == undefined || posting[schema[key].id] == "")) {
               notFilledIn = true;
             } 
@@ -144,17 +145,17 @@
           if (str+""=="1") return "required";
         }
        });
-function copy(o) {
-  var copy = Object.create(Object.getPrototypeOf(o));
-  var propNames = Object.getOwnPropertyNames(o);
-
-  propNames.forEach(function(name) {
-    var desc = Object.getOwnPropertyDescriptor(o, name);
-    Object.defineProperty(copy, name, desc);
-  });
-
-  return copy;
-}
+  function copy(o) {
+    var copy = Object.create(Object.getPrototypeOf(o));
+    var propNames = Object.getOwnPropertyNames(o);
+  
+    propNames.forEach(function(name) {
+      var desc = Object.getOwnPropertyDescriptor(o, name);
+      Object.defineProperty(copy, name, desc);
+    });
+  
+    return copy;
+  }
   </script>
   </polymer-element>
 </html>

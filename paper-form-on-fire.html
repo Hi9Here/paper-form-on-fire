@@ -5,13 +5,13 @@
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link href="../core-collapse/core-collapse.html" rel="import">
-<link href="../core-menu/core-menu.html" rel="import">
-<link href="../paper-dropdown/paper-dropdown.html" rel="import">
-<link href="../paper-item/paper-item.html" rel="import">
-<link href="../paper-dialog/paper-action-dialog.html" rel="import">
+<link rel="import" href="../core-collapse/core-collapse.html">
+<link rel="import" href="../core-menu/core-menu.html">
+<link rel="import" href="../paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-dialog/paper-action-dialog.html">
 
-<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link linkText">
+<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content_key linkText">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
     <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
@@ -23,43 +23,43 @@
   </template>
   <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
 
-      <firebase-element id="base" location="{{firebase_url_data}}"> </firebase-element>
-      <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
-      <template id="theForm" repeat="{{x in keys}}">
-        <template if="{{form[x].type == 'date'}}">
+    <firebase-element id="base" location="{{firebase_url_data}}" data="{{content}}" > </firebase-element>
+    <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
+    <template id="theForm" repeat="{{x in keys}}">
+      <template if="{{form[x].type == 'date'}}">
         <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
-        </template>
-
-        <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
-          <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
-            <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
-      	  </paper-input-decorator>
-        </template>
-        
-        <template if="{{form[x].type == 'textarea'}}">
-          <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
-            <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
-	        </paper-input-decorator>
-        </template>
-        
-        <template if="{{form[x].type == 'option'}}">
-          <paper-dropdown-menu label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}">
-              <paper-dropdown class="dropdown">
-                  <core-menu id="{{form[x].id}}" selected="{{data[form[x].id]}}" class="menu" on-core-select="{{inputAction}}">
-                    <template repeat="{{ option in form[x].options }}">
-                      <paper-item>{{option}}</paper-item>
-                    </template>
-                  </core-menu>
-              </paper-dropdown>
-          </paper-dropdown-menu>
-        </template>
-        
-        <template if="{{!form[x].type}}">
-          {{form[x]}}
-        </template>
       </template>
-      <div horizontal layout>
-      </div>
+
+      <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
+        <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
+          <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
+        </paper-input-decorator>
+      </template>
+        
+      <template if="{{form[x].type == 'textarea'}}">
+        <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
+          <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
+        </paper-input-decorator>
+      </template>
+        
+      <template if="{{form[x].type == 'option'}}">
+        <paper-dropdown-menu label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}">
+          <paper-dropdown class="dropdown">
+            <core-menu id="{{form[x].id}}" selected="{{data[form[x].id]|selected}}" class="menu" on-core-select="{{inputAction}}">
+              <template repeat="{{ option in form[x].options }}">
+                <paper-item>{{option}}</paper-item>
+              </template>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+      </template>
+        
+      <template if="{{!form[x].type}}">
+        {{form[x]}}
+      </template>
+    </template>
+    <div horizontal layout>
+    </div>
     <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
     <paper-button label="OK" affirmative id="ok" disabled="{{notFilledIn}}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
@@ -70,6 +70,9 @@
     <script>
       Polymer('paper-form-on-fire', {
         ready: function() {
+          if (this.content[this.content_key] !== undefined) {
+            this.data = copy(this.content[this.content_key]);
+          }
         },
         loadFrom: function(e) {
           this.$.loadFrom.toggle();
@@ -81,7 +84,6 @@
           listOfInputs = Object.keys(schema);
           notFilledIn = false;
           listOfInputs.forEach(function (key) {
-            debugger;
             if (schema[key].required && (posting[schema[key].id] == undefined || posting[schema[key].id] == "")) {
               notFilledIn = true;
             } 
@@ -143,6 +145,9 @@
         },
         required: function(str){
           if (str+""=="1") return "required";
+        },
+        selected: function(num){
+          if (num>0) return "selected";
         }
        });
   function copy(o) {

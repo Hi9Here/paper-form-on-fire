@@ -10,24 +10,25 @@
 <link rel="import" href="../paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-dialog/paper-action-dialog.html">
+<link rel="import" href="../juicy-html/juicy-html.html">
 
-<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content_key linkText">
+<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content content_key label linkText">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
     <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
   </template>
   <template bind if="{{!link}}">
     <paper-button on-click="{{loadFrom}}" raised role="button" tabindex="0"> 
-      {{linkText}}
+      {{label}}
     </paper-button>
   </template>
   <paper-action-dialog id="loadFrom" backdrop autoCloseDisabled >
 
-    <firebase-element id="base" location="{{firebase_url_data}}" data="{{content}}" > </firebase-element>
+    <firebase-element id="base" location="{{firebase_url_data}}" keys="{{content_keys}}"> </firebase-element>
     <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
     <template id="theForm" repeat="{{x in keys}}">
       <template if="{{form[x].type == 'date'}}">
-        <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}" ></paper-datepicker>
+        <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}"></paper-datepicker>
       </template>
 
       <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
@@ -45,7 +46,7 @@
       <template if="{{form[x].type == 'option'}}">
         <paper-dropdown-menu label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}">
           <paper-dropdown class="dropdown">
-            <core-menu id="{{form[x].id}}" selected="{{data[form[x].id]|selected}}" class="menu" on-core-select="{{inputAction}}">
+            <core-menu id="{{form[x].id}}" selected="{{data[form[x].id]}}" class="menu" on-core-select="{{inputAction}}">
               <template repeat="{{ option in form[x].options }}">
                 <paper-item>{{option}}</paper-item>
               </template>
@@ -54,14 +55,14 @@
         </paper-dropdown-menu>
       </template>
         
-      <template if="{{!form[x].type}}">
-        {{form[x]}}
+      <template is="juicy-html" if="{{!form[x].type}}" content="{{form[x]}}">
       </template>
     </template>
     <div horizontal layout>
     </div>
-    <paper-button label="CANCEL" affirmative>CANCEL</paper-button>
-    <paper-button label="OK" affirmative id="ok" disabled="{{notFilledIn}}" on-click="{{addEntry}}">OK</paper-button>
+    <paper-button hidden?="{{!content}}" label="DONE" affirmative>DONE</paper-button>
+    <paper-button hidden?="{{content}}" label="CANCEL" affirmative>CANCEL</paper-button>
+    <paper-button hidden?="{{content}}" label="OK" affirmative id="ok" disabled="{{notFilledIn}}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
  <paper-toast raised text="Your Message has Been sent" id="toast1" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
  <paper-toast raised text="Your Message has NOT Been sent PHONE US NOW" id="toast2" touch-action="none" class="core-transition core-transition-bottom"></paper-toast>
@@ -70,14 +71,20 @@
     <script>
       Polymer('paper-form-on-fire', {
         ready: function() {
-          if (this.content[this.content_key] !== undefined) {
-            this.data = copy(this.content[this.content_key]);
+          if (this.content_key !== undefined) {
+            this.data = this.content[this.content_key];
+          }
+          if (this.data === undefined) {
+            if (this.content === undefined) {
+              this.data = {};
+            } else {
+              this.data = this.content;
+            }
           }
         },
         loadFrom: function(e) {
           this.$.loadFrom.toggle();
         },
-        data:{},
         inputAction:function(e) {
           var posting = copy(this.data); 
           var schema = copy(this.form); 
@@ -141,13 +148,13 @@
         },
         requiredStar: function(str){
           if (str+""=="1") return ' *';
-          // if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
+          // juicy-html if (str+""=="1") return '<span class="form-required" title="This field is required.">*</span>';
         },
         required: function(str){
           if (str+""=="1") return "required";
         },
         selected: function(num){
-          if (num>0) return "selected";
+          if (+num>0) return "selected";
         }
        });
   function copy(o) {

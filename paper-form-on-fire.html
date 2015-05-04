@@ -33,10 +33,7 @@
         <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}"></paper-datepicker>
       </template>
 
-      <template if="{{(form[x].type == 'text' || form[x].type == 'email'
-       || form[x].type == 'number' || form[x].type == 'url' 
-       || form[x].type == 'tel'    || form[x].type == 'password' 
-       || form[x].type == 'color'  || form[x].type == 'range')}}">
+      <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' || form[x].type == 'url' || form[x].type == 'tel' || form[x].type == 'password' || form[x].type == 'color'  || form[x].type == 'range')}}">
         <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
           <input value="{{data[form[x].id]}}" min="{{form[x].min}}" max="{{form[x].max}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
         </paper-input-decorator>

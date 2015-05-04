@@ -1,45 +1,48 @@
-<!--
-    @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-    Code distributed by Google as part of the polymer project is also
-    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-<!doctype html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>Paper Form on fire Demo</title>
-
-  <script src="../webcomponentsjs/webcomponents.min.js"></script>
-  <link rel="import" href="paper-form-on-fire.html">
-
-</head>
 <body unresolved>
 
-  <p>An example of using <code>&lt;paper-form-on-fire link=1 linkText="booking form" 
+  <p>An example of using 
+    <code>&lt;paper-form-on-fire link=1 linkText="booking form" 
   firebase_url_data="https://form.firebaseio-demo.com/data"
   firebase_url_form="https://form.firebaseio-demo.com/form"
-  &gt;</code>:</p>
+  &gt;</code>
+  :</p>
 
-  <paper-form-on-fire link="1" linkText="booking form"
-  firebase_url_data="https://form.firebaseio-demo.com/data"
-  firebase_url_form="https://form.firebaseio-demo.com/form"
+  <paper-form-on-fire link="1" linkText="add form element"
+  firebase_url_data="https://form.firebaseio-demo.com/form"
+  firebase_url_form="https://paper-form.firebaseio.com/"
   >
-    <h2>Hello paper-form-on-fire</h2>
   </paper-form-on-fire>
+  <pre>
+{
+  "00 Key" : {"id" : "key", "special" : 1, "type" : "text"  },
+  "01 Id" : {"id" : "id", "required" : 1, "type" : "text" },
+  "02 Required" : {"id" : "required", "type" : "text" },
+  "03 Type" : {
+    "id" : "type",
+    "options" : ["text", "textarea", "option", "date", "email",
+     "number", "url", "tel", "color", "password" , "range" ],
+    "required" : 1,
+    "type" : "option"
+  },
+  "04 Options" : {"id" : "options", "type" : "textarea" },
+  "05 Placeholder" : {"id" : "placeholder", "type" : "text"},
+  "06 Pattern" : {"id" : "pattern", "type" : "text"},
+  "07 Min" : {"id" : "min", "type" : "number"},
+  "08 Max" : {"id" : "max", "type" : "number"}
+}
+  </pre>
 
   <p>An example of using <code>&lt;paper-form-on-fire linkText="New Player"   firebase_url_data="https://form.firebaseio-demo.com/data"
   firebase_url_form="https://quidditch.firebaseio-demo.com/forms/players"
  &gt;</code>:</p>
 
-  <paper-form-on-fire linkText="New Player" firebase_url_data="https://form.firebaseio-demo.com/data"
-  firebase_url_form="https://quidditch.firebaseio-demo.com/forms/players"
+  <paper-form-on-fire label="New Player" 
+  firebase_url_data="https://form.firebaseio-demo.com/data"
+  firebase_url_form="https://form.firebaseio-demo.com/form/"
  >
-    <h2>Hello paper-form-on-fire</h2>
   </paper-form-on-fire>
   <p>see the data <a href="https://form.firebaseio-demo.com/"> here </a></p>
+  
+  
 </body>
 </html>

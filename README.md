@@ -1,6 +1,8 @@
 Polymer Paper Form on Fire
 ============
 
+[so far](https://youtu.be/BqSPdjLXcPE)
+
 ##What is it
 
 It's a quick and easy form we created. It is a Polymer Component Form based on Material Design using the [Polymer Project](https://www.polymer-project.org/) as a guide. It is using Firebase, a realitme server service owned by Google. The Firebase element was designed by the Google Polymer Team. It is also using [paper-date-picker](https://github.com/HackITtoday/paper-datepicker) another component we have created.

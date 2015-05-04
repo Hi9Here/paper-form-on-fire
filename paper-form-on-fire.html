@@ -132,19 +132,43 @@
             }
           });
           if (!notFilledIn){
+            var building = false;
+            var genkey = false;
             posting_.from = document.URL;
-      	    if (this.$.base.push(posting_) != false) {
-              this.$.toast1.show();// Sent
-              this.ready();
-            } else {
-              this.$.toast2.show();// Not sent
+            if (this.form.hasOwnProperty("00 Key")){
+              if (this.form["00 Key"].hasOwnProperty("special")){
+                if (this.form["00 Key"].special === 1){
+                  building = true;
+                  if (typeof this.data[this.form["00 Key"]] === 'string') {
+                    if (this.data[this.form["00 Key"]].match(/^[0-9]+\s+(.*)$/).length !== 2){
+                      genkey = true;
+                    }
+                  } else {
+                    genkey = true;
+                  }
+                }
+              }
             }
-          } else {
+            if (genkey) {
+               this.data[this.form["00 Key"]] = genKey(this.$.base.data,this.data.id)
+            }
+            if (building){
+              this.$.base.data[this.data[this.form["00 Key"]]] = posting_;
+              } else {
+              if (this.$.base.push(posting_) != false) {
+                this.$.toast1.show();// Sent
+                this.ready();
+                } else {
+                this.$.toast2.show();// Not sent
+              }              
+            }
+            } else {
             this.$.toast3.show();// Not fill in
             this.$.loadFrom.toggle();// 
             this.notFilledIn = true;
             return false;
           }
+
         },
         removeLeadingNumber: function(str){
           return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
@@ -159,19 +183,37 @@
         selected: function(num){
           if (+num>0) return "selected";
         }
-       });
-       
-  function copy(o) {
-    var copy = Object.create(Object.getPrototypeOf(o));
-    var propNames = Object.getOwnPropertyNames(o);
-  
-    propNames.forEach(function(name) {
-      var desc = Object.getOwnPropertyDescriptor(o, name);
-      Object.defineProperty(copy, name, desc);
-    });
-  
-    return copy;
-  }
-  </script>
-  </polymer-element>
-</html>
+      });
+
+      function copy(o) {
+        var copy = Object.create(Object.getPrototypeOf(o));
+        var propNames = Object.getOwnPropertyNames(o);
+
+        propNames.forEach(function(name) {
+          var desc = Object.getOwnPropertyDescriptor(o, name);
+          Object.defineProperty(copy, name, desc);
+        });
+
+        return copy;
+      }
+      function zeroPad(num, places) {
+        var zero = places - num.toString().length + 1;
+        return Array(+(zero > 0 && zero)).join("0") + num;
+      }
+      function genKey(target,name) {
+        var max = 0;
+        var pad = 2;
+        for (var k in target){
+          if (target.hasOwnProperty(k)) {
+            if (k.match(/^[0-9]+\s+(.*)$/) === null){
+              delete target[k];
+              } else {
+              max = Math.max(max, +k.match(/\d+/g)[0]);
+              pad = Math.max(pad, (""+k.match(/\d+/g)[0]).length);
+            }
+          }
+        }
+        return zeroPad(max + 1,pad) + " " + name;
+      }
+    </script>
+    </polymer-element>

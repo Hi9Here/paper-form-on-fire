@@ -26,14 +26,19 @@
 
     <firebase-element id="base" location="{{firebase_url_data}}" keys="{{content_keys}}"> </firebase-element>
     <firebase-element id="form" location="{{firebase_url_form}}" data="{{form}}" keys="{{keys}}" dataready> </firebase-element>
+    
     <template id="theForm" repeat="{{x in keys}}">
+		
       <template if="{{form[x].type == 'date'}}">
         <paper-datepicker locale="{{form[x].location}}" formatDate="{{form[x].format}}" datePicked="{{data[form[x].id]}}"></paper-datepicker>
       </template>
 
-      <template if="{{(form[x].type == 'text' || form[x].type == 'email' || form[x].type == 'number' )}}">
+      <template if="{{(form[x].type == 'text' || form[x].type == 'email'
+       || form[x].type == 'number' || form[x].type == 'url' 
+       || form[x].type == 'tel'    || form[x].type == 'password' 
+       || form[x].type == 'color'  || form[x].type == 'range')}}">
         <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
-          <input value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
+          <input value="{{data[form[x].id]}}" min="{{form[x].min}}" max="{{form[x].max}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
         </paper-input-decorator>
       </template>
         
@@ -57,6 +62,7 @@
         
       <template is="juicy-html" if="{{!form[x].type}}" content="{{form[x]}}">
       </template>
+      
     </template>
     <div horizontal layout>
     </div>
@@ -157,6 +163,7 @@
           if (+num>0) return "selected";
         }
        });
+       
   function copy(o) {
     var copy = Object.create(Object.getPrototypeOf(o));
     var propNames = Object.getOwnPropertyNames(o);

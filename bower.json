@@ -30,6 +30,7 @@
     "paper-toast": "Polymer/paper-toast#~0.5.5",
     "paper-dropdown-menu": "Polymer/paper-dropdown-menu#~0.5.5",
     "paper-item": "Polymer/paper-item#~0.5.5",
+    "paper-checkbox": "Polymer/paper-checkbox#^0.5",
     "core-menu": "Polymer/core-menu#~0.5.5"
   },
   "devDependencies": {

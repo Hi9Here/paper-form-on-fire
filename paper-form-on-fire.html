@@ -10,6 +10,7 @@
 <link rel="import" href="../paper-dropdown/paper-dropdown.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-dialog/paper-action-dialog.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../juicy-html/juicy-html.html">
 
 <polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content content_key label linkText">
@@ -37,6 +38,10 @@
         <paper-input-decorator error="{{form[x].error}}" id="decorator-{{form[x].id}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
           <input value="{{data[form[x].id]}}" min="{{form[x].min}}" max="{{form[x].max}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" {{form[x].required|required}} on-input="{{inputAction}}"></input>
         </paper-input-decorator>
+      </template>
+        
+      <template if="{{form[x].type == 'checkbox'}}">
+        <core-label>{{x|removeLeadingNumber}}</core-label> <paper-checkbox checked?="{{data[form[x].id]}}"></paper-checkbox>
       </template>
         
       <template if="{{form[x].type == 'textarea'}}">
@@ -153,6 +158,9 @@
                this.data[this.form["00 Key"]] = genKey(this.$.base.data,this.data.id)
             }
             if (building){
+              if (posting_.options !== undefined ) {
+                posting_.options = posting_.options.split(/\r?\n/); 
+              }
               this.$.base.data[this.data[this.form["00 Key"]]] = posting_;
               } else {
               if (this.$.base.push(posting_) != false) {
@@ -213,7 +221,7 @@
             }
           }
         }
-        return zeroPad(max + 1,pad) + " " + name;
+        return zeroPad(max + 1,pad) + " " + name.charAt(0).toUpperCase() + name.slice(1);
       }
     </script>
     </polymer-element>

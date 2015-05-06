@@ -13,7 +13,7 @@
 <link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../juicy-html/juicy-html.html">
 
-<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content content_key label linkText">
+<polymer-element name="paper-form-on-fire" attributes="firebase_url_data firebase_url_form link content content_key label linkText edit">
   <template id="paper-form-on-fire">
   <template applyAuthorStyles bind if="{{link}}">
     <a href="#!" on-click="{{loadFrom}}" >{{linkText}}</a>
@@ -41,7 +41,7 @@
       </template>
         
       <template if="{{form[x].type == 'checkbox'}}">
-        <core-label>{{x|removeLeadingNumber}}</core-label> <paper-checkbox checked?="{{data[form[x].id]}}"></paper-checkbox>
+        <div><core-label>{{x|removeLeadingNumber}}</core-label> <paper-checkbox checked="{{data[form[x].id]}}"></paper-checkbox></div>
       </template>
         
       <template if="{{form[x].type == 'textarea'}}">
@@ -64,11 +64,14 @@
         
       <template is="juicy-html" if="{{!form[x].type}}" content="{{form[x]}}">
       </template>
-      
+      <template is="juicy-html" if="{{edit}}" content="{{form[x]}}">
+      <paper-form-on-fire link=1 linkText=":" content="{{}}"></paper-form-on-fire>
+      </template>
+     
     </template>
     <div horizontal layout>
     </div>
-    <paper-button hidden?="{{!content}}" label="DONE" affirmative>DONE</paper-button>
+    <paper-button hidden?="{{!content}}" label="DONE" on-click="{{save}}" affirmative>DONE</paper-button>
     <paper-button hidden?="{{content}}" label="CANCEL" affirmative>CANCEL</paper-button>
     <paper-button hidden?="{{content}}" label="OK" affirmative id="ok" disabled="{{notFilledIn}}" on-click="{{addEntry}}">OK</paper-button>
   </paper-action-dialog>
@@ -90,6 +93,11 @@
             }
           }
         },
+        save: function() { console.log("save");
+          if (this.content_key !== undefined) {
+            this.$.base.data[this.content_key] = this.data; 
+          }
+        },
         loadFrom: function(e) {
           this.$.loadFrom.toggle();
         },
@@ -99,8 +107,10 @@
           listOfInputs = Object.keys(schema);
           notFilledIn = false;
           listOfInputs.forEach(function (key) {
-            if (schema[key].required && (posting[schema[key].id] == undefined || posting[schema[key].id] == "")) {
-              notFilledIn = true;
+            if (schema[key].required){ 
+              if(posting[schema[key].id] === undefined || posting[schema[key].id] === "") {
+                notFilledIn = true;
+              }
             } 
           });
           this.notFilledIn = notFilledIn;
@@ -155,7 +165,7 @@
               }
             }
             if (genkey) {
-               this.data[this.form["00 Key"]] = genKey(this.$.base.data,this.data.id)
+              this.data[this.form["00 Key"]] = genKey(this.$.base.data,this.data.id)
             }
             if (building){
               if (posting_.options !== undefined ) {

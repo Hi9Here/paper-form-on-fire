@@ -64,8 +64,8 @@
         
       <template is="juicy-html" if="{{!form[x].type}}" content="{{form[x]}}">
       </template>
-      <template is="juicy-html" if="{{edit}}" content="{{form[x]}}">
-      <paper-form-on-fire link=1 linkText=":" content="{{}}"></paper-form-on-fire>
+      <template is="juicy-html" if="{{edit}}" content="<paper-form-on-fire link=1 linkText=':' content='{{form[x]}}'></paper-form-on-fire>">
+      
       </template>
      
     </template>
@@ -94,9 +94,8 @@
           }
         },
         save: function() { console.log("save");
-          if (this.content_key !== undefined) {
-            this.$.base.data[this.content_key] = this.data; 
-          }
+          debugger;
+          this.addEntry();
         },
         loadFrom: function(e) {
           this.$.loadFrom.toggle();
@@ -130,7 +129,7 @@
           var notFilledIn = false;
           listOfInputs = Object.keys(schema);
           listOfInputs.forEach(function (key) {
-            if ((schema[key].required+"" == "1" ) && (posting[schema[key].id] == undefined || posting[schema[key].id] == "") ) {
+            if ((schema[key].required+"" == "1" ) && (posting[schema[key].id] === undefined || posting[schema[key].id] === "") ) {
               notFilledIn = true;
             } else {
               if (schema[key].type == "date") {
@@ -149,7 +148,8 @@
           if (!notFilledIn){
             var building = false;
             var genkey = false;
-            posting_.from = document.URL;
+            var theKey = false;
+            debugger;
             if (this.form.hasOwnProperty("00 Key")){
               if (this.form["00 Key"].hasOwnProperty("special")){
                 if (this.form["00 Key"].special === 1){
@@ -163,30 +163,43 @@
                   }
                 }
               }
+              } else {
+              posting_.from = document.URL;
+              if (this.data[this.form["title"]]) {
+                
+              }
             }
             if (genkey) {
-              this.data[this.form["00 Key"]] = genKey(this.$.base.data,this.data.id)
+              theKey = genKey(this.$.base.data,this.data.id);
+            } else {
+              if (this.content_key) { 
+                theKey = this.content_key;
+              } else if (this.data.hasOwnProperty("title")) {
+                theKey = genKey(this.$.base.data,this.data.title);
+              } else {
+                theKey = genKey(this.$.base.data,"title");
+              }
             }
-            if (building){
+           // if (building){
               if (posting_.options !== undefined ) {
                 posting_.options = posting_.options.split(/\r?\n/); 
               }
-              this.$.base.data[this.data[this.form["00 Key"]]] = posting_;
-              } else {
-              if (this.$.base.push(posting_) != false) {
-                this.$.toast1.show();// Sent
-                this.ready();
-                } else {
-                this.$.toast2.show();// Not sent
-              }              
-            }
-            } else {
+              this.$.base.data[theKey] = posting_;
+   //           } else {
+   //           this.$.base.data[theKey] = posting_; 
+   //           if (this.$.base.push(posting_) != false) {
+   //             this.$.toast1.show();// Sent
+   //             this.ready();
+   //             } else {
+   //             this.$.toast2.show();// Not sent
+   //           }              
+   //         }
+          } else {
             this.$.toast3.show();// Not fill in
             this.$.loadFrom.toggle();// 
             this.notFilledIn = true;
             return false;
           }
-
         },
         removeLeadingNumber: function(str){
           return str.match(/^[0-9]+\s+(.*)$/)[1];// need to add a if
@@ -202,7 +215,6 @@
           if (+num>0) return "selected";
         }
       });
-
       function copy(o) {
         var copy = Object.create(Object.getPrototypeOf(o));
         var propNames = Object.getOwnPropertyNames(o);
@@ -234,4 +246,4 @@
         return zeroPad(max + 1,pad) + " " + name.charAt(0).toUpperCase() + name.slice(1);
       }
     </script>
-    </polymer-element>
+</polymer-element>

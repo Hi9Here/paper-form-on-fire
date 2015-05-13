@@ -184,6 +184,9 @@
               if (posting_.options !== undefined ) {
                 posting_.options = posting_.options.split(/\r?\n/); 
               }
+              if (this.$.base.data === null){ 
+                this.$.base.data = {};
+              }
               this.$.base.data[theKey] = posting_;
    //           } else {
    //           this.$.base.data[theKey] = posting_; 

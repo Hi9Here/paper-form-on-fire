@@ -48,7 +48,7 @@
         <paper-input-decorator error="{{form[x].error}}" label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}" floatinglabel >
           <textarea value="{{data[form[x].id]}}" is="core-input" type="{{form[x].type}}" id="{{form[x].id}}" ></textarea>
         </paper-input-decorator>
-      </template>
+      </template>
         
       <template if="{{form[x].type == 'option'}}">
         <paper-dropdown-menu label="{{x|removeLeadingNumber}} {{form[x].required|requiredStar}}">
@@ -176,6 +176,8 @@
                 theKey = this.content_key;
               } else if (this.data.hasOwnProperty("title")) {
                 theKey = genKey(this.$.base.data,this.data.title);
+              } else if (this.data.hasOwnProperty("value")) {
+                theKey = genKey(this.$.base.data,this.data.value);
               } else {
                 theKey = genKey(this.$.base.data,"title");
               }
